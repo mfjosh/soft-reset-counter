@@ -1,7 +1,11 @@
-#Version Number : 0.1.1
+#Version Number : 0.1.2
 #####    ----       global flags
 import os
 file_path ="counter.txt"
+import keyboard
+import time
+import msvcrt
+
 
 ######     ----    Functions will be placed here
 def file_validation():
@@ -13,12 +17,14 @@ def file_validation():
         data = text_file.read()
         #close file
         text_file.close()
+        print("File location: counter.txt")
     else:
         with open(file_path, 'w') as f:
             f.write("0")
             ftext_file = open(file_path, 'r')
             fdata = ftext_file.read()
             ftext_file.close()
+            print("counter.txt created in directory")
  #add numbers to the existing text
 def add_number():
     text1 = open(file_path,'r')
@@ -71,7 +77,8 @@ def get_menu_choice():
 
     while loop:          # While loop which will keep going until loop = False
         print_menu()    # Displays menu
-        choice = input("Enter your choice [1-5]: ")
+        #choice = input("Enter your choice [1-5]: ")
+        choice = msvcrt.getch().decode('ASCII')
 
         if choice == '1':
             add_number()
@@ -86,6 +93,10 @@ def get_menu_choice():
             int_choice = -1
             #Example Command here
             loop = False  # This will make the while loop to end
+        elif choice == '+':
+            add_number()
+        elif choice == '-':
+            subtract_number()
         else:
             # Any inputs other than values 1-4 we print an error message
             input("Wrong menu selection. Enter any key to try again..")
@@ -95,4 +106,3 @@ def get_menu_choice():
 #Code begins here
 file_validation()
 get_menu_choice()
-input()
