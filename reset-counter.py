@@ -1,3 +1,4 @@
+#Version Number : 0.1
 #global flags
 import os
 file_path ="counter.txt"
