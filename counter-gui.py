@@ -4,8 +4,13 @@ from tkinter import *
 import os
 import time
 import msvcrt
+from bindglobal import BindGlobal
 
 file_path ="counter.txt"
+ws = Tk()
+txtarea = Text(ws, width=5, height=0,bg='#F0F0F0', font=("Helvetica", 40))
+
+
 ######     ----    Functions will be placed here
 def file_validation():
     #check if counter.txt exists
@@ -126,7 +131,61 @@ def openFile():
     data = tf.read()
     txtarea.insert(END, data)
     tf.close()
-
+def WindowSetttings():
+    ws.title("Shiny Reset Counter")
+    ws.geometry("350x500")
+    ws['bg']='#F0F0F0'
+def Label1Config():
+    var = StringVar()
+    LabelTop = Label(ws,bg='#F0F0F0',fg="blue",textvariable=var,font=("Arial",12))
+    var.set("File is generated and saved as counter.txt")
+    LabelTop.place(x=25, y=0)
+def Label2Config():
+    var = StringVar()
+    LabelTop = Label(ws,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
+    var.set("Odds 1/4096")
+    LabelTop.place(x=0, y=400)
+def Label3Config():
+    var = StringVar()
+    LabelTop = Label(ws,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
+    var.set("Created by : CorruptedJosh")
+    LabelTop.place(x=0, y=425)
+def HotKeyPress():
+    bg = BindGlobal()
+    bg.gbind('+',hotkeyadd)
+    bg.gbind('-',hotkeysub)
+    bg.gbind('*',hotkeyreset)
+def MainButtons():
+    Button(
+        ws,
+        text="add",
+        height=2,
+        width=10,
+        command=lambda:addopen()
+        ).place(x=100,y=200)
+    Button(
+        ws,
+        text="subtract",
+        height=2,
+        width=10,
+        command=lambda:subopen()
+        ).place(x=180,y=200)
+    Button(
+        ws,
+        text="reset",
+        height=2,
+        width=21,
+        command=lambda:resetopen()
+        ).place(x=100,y=241)
+def hotkeyadd(event):
+    addopen()
+def hotkeysub(event):
+    subopen()
+def hotkeyreset(event):
+    resetopen()
+def TextAreaConfig():
+    txtarea.place(x=100 ,y=100, height=95, width=150)
+    txtarea.configure(state="disabled")
 ##### THESE ARE THE FUNCTIONS THAT RUN THE CONSOLE VERSION
 #Code begins here
 #file_validation()
@@ -135,38 +194,15 @@ def openFile():
 
 
 #### THIS IS FOR THE GUI
-ws = Tk()
-ws.title("Shiny Reset Counter")
-ws.geometry("400x450")
-ws['bg']='#000'
-
-txtarea = Text(ws, width=40, height=5)
-txtarea.pack(pady=20)
-txtarea.configure(state="disabled")
-
-#pathh = Entry(ws)
-#pathh.pack(side=LEFT, expand=True, fill=X, padx=20)
+Label1Config()
+TextAreaConfig()
+WindowSetttings()
+HotKeyPress()
+MainButtons()
+Label2Config()
+Label3Config()
 
 
-Button(
-    ws,
-    text="add",
-    command=lambda:addopen()
-    ).pack(side=LEFT, expand=True, fill=X, padx=5)
-ws.bind('+', lambda event:addopen())
 
-Button(
-    ws,
-    text="subtract",
-    command=lambda:subopen()
-    ).pack(side=LEFT, expand=True, fill=X, padx=5)
-ws.bind('-', lambda event:subopen())
-
-Button(
-    ws,
-    text="reset",
-    command=lambda:resetopen()
-    ).pack(side=RIGHT, expand=True, fill=X, padx=5)
-ws.bind('*', lambda event:resetopen())
 
 ws.mainloop()
