@@ -1,18 +1,15 @@
-#Version Number : 0.1.2
+#Version Number : 0.2.2
 #####    ----       global flags
 from tkinter import *
 import os
 import time
 import msvcrt
 from bindglobal import BindGlobal
-
-file_path ="counter.txt"
 ws = Tk()
-txtarea = Text(ws, width=5, height=0,bg='#F0F0F0', font=("Helvetica", 40))
-
-
 ######     ----    Functions will be placed here
 def file_validation():
+    global file_path
+    file_path ="counter.txt"
     #check if counter.txt exists
     if os.path.isfile(file_path):
         #open in read mode
@@ -29,7 +26,6 @@ def file_validation():
             fdata = ftext_file.read()
             ftext_file.close()
             print("counter.txt created in directory")
- #add numbers to the existing text
 def add_number():
     text1 = open(file_path,'r')
     data1 = text1.read()
@@ -37,7 +33,6 @@ def add_number():
     sum = int(data1) + 1
     with open(file_path, 'w') as e:
         e.write(str(sum))
- #subtract 1 from the number
 def subtract_number():
     text1 = open(file_path,'r')
     data1 = text1.read()
@@ -45,7 +40,6 @@ def subtract_number():
     sum = int(data1) - 1
     with open(file_path, 'w') as e:
         e.write(str(sum))
- #reset counter to Zero
 def reset_counter():
     text1 = open(file_path,'r')
     data1 = text1.read()
@@ -53,7 +47,6 @@ def reset_counter():
     sum = 0
     with open(file_path, 'w') as e:
         e.write(str(sum))
- #Test to print number for validation
 def print_number():
     #open in read mode
     text_file = open(file_path,'r')
@@ -135,6 +128,11 @@ def WindowSetttings():
     ws.title("Shiny Reset Counter")
     ws.geometry("350x500")
     ws['bg']='#F0F0F0'
+def TextAreaConfig():
+    global txtarea
+    txtarea = Text(ws, width=5, height=0,bg='#F0F0F0', font=("Helvetica", 40))
+    txtarea.place(x=100 ,y=100, height=95, width=150)
+    txtarea.configure(state="disabled")
 def Label1Config():
     var = StringVar()
     LabelTop = Label(ws,bg='#F0F0F0',fg="blue",textvariable=var,font=("Arial",12))
@@ -183,17 +181,9 @@ def hotkeysub(event):
     subopen()
 def hotkeyreset(event):
     resetopen()
-def TextAreaConfig():
-    txtarea.place(x=100 ,y=100, height=95, width=150)
-    txtarea.configure(state="disabled")
-##### THESE ARE THE FUNCTIONS THAT RUN THE CONSOLE VERSION
-#Code begins here
-#file_validation()
-#get_menu_choice()
-
-
 
 #### THIS IS FOR THE GUI
+file_validation()
 Label1Config()
 TextAreaConfig()
 WindowSetttings()
@@ -201,8 +191,5 @@ HotKeyPress()
 MainButtons()
 Label2Config()
 Label3Config()
-
-
-
 
 ws.mainloop()
