@@ -1,10 +1,13 @@
-#Version Number : 0.2.2
+#Version Number : 0.2.3
 #####    ----       global flags
 from tkinter import *
 import os
 import time
 import msvcrt
 from bindglobal import BindGlobal
+import pyautogui
+import threading
+
 ws = Tk()
 ######     ----    Functions will be placed here
 def file_validation():
@@ -18,7 +21,7 @@ def file_validation():
         data = text_file.read()
         #close file
         text_file.close()
-        print("File location: counter.txt")
+        #print("File location: counter.txt")
     else:
         with open(file_path, 'w') as f:
             f.write("0")
@@ -126,7 +129,7 @@ def openFile():
     tf.close()
 def WindowSetttings():
     ws.title("Shiny Reset Counter")
-    ws.geometry("350x500")
+    ws.geometry("475x650")
     ws['bg']='#F0F0F0'
 def TextAreaConfig():
     global txtarea
@@ -182,6 +185,28 @@ def hotkeysub(event):
 def hotkeyreset(event):
     resetopen()
 
+def printopen():
+    txtarea.configure(state="normal")
+    txtarea.delete(1.0, END)
+    #add_number()
+    print_number()
+    openFile()
+    txtarea.configure(state="disabled")
+####TESTING
+def copyright_validation():
+    ref_region = pyautogui.locateOnScreen('reference.png')
+    time.sleep(1)
+    if ref_region != None:
+        addopen()
+        while ref_region != None:
+            ref_region = pyautogui.locateOnScreen('reference.png')
+            time.sleep(1)
+    ws.after(2000, start_copyright_validation_in_bg)
+def start_copyright_validation_in_bg():
+    threading.Thread(target=copyright_validation).start()
+
+#### END TESTING
+
 #### THIS IS FOR THE GUI
 file_validation()
 Label1Config()
@@ -191,5 +216,7 @@ HotKeyPress()
 MainButtons()
 Label2Config()
 Label3Config()
+start_copyright_validation_in_bg()
+
 
 ws.mainloop()
