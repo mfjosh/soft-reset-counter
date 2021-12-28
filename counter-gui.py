@@ -15,6 +15,7 @@ stop_threads = False
 on = PhotoImage(file ="on.png")
 off = PhotoImage(file ="off.png")
 pyautogui.PAUSE = 0
+
 ######     ----    Functions will be placed here
 def file_validation():
     global file_path
@@ -64,50 +65,6 @@ def print_number():
     #close file
     text_file.close()
     print(data)
-#def get_menu_choice():
-    def print_menu():       # Your menu design here
-        print(30 * "-", "SHINY COUNTER MENU", 30 * "-")
-        print("The Current Count is: ", end=""), print_number()
-        print("")
-        print("")
-        print("")
-        print("1. Add ")
-        print("2. Subtract ")
-        print("3. Reset Counter ")
-        print("4. Exit ")
-        #print("5. Example Text ")
-        print(73 * "-")
-
-    loop = True
-    int_choice = -1
-
-    while loop:          # While loop which will keep going until loop = False
-        print_menu()    # Displays menu
-        #choice = input("Enter your choice [1-5]: ")
-        choice = msvcrt.getch().decode('ASCII')
-
-        if choice == '1':
-            add_number()
-        elif choice == '2':
-            subtract_number()
-        elif choice == '3':
-            reset_counter()
-        elif choice == '4':
-            print("Exiting..")
-            exit()
-        elif choice == '5':
-            int_choice = -1
-            #Example Command here
-            loop = False  # This will make the while loop to end
-        elif choice == '+':
-            add_number()
-        elif choice == '-':
-            subtract_number()
-        else:
-            # Any inputs other than values 1-4 we print an error message
-            input("Wrong menu selection. Enter any key to try again..")
-    return [int_choice, choice]
-    print(get_menu_choice())
 def addopen():
     txtarea.configure(state="normal")
     txtarea.delete(1.0, END)
@@ -122,7 +79,7 @@ def subopen():
     txtarea.configure(state="disabled")
 def resetopen():
     txtarea.configure(state="normal")
-    txtarea.delete(1.0, END)
+    txtarea.delete(1.0,END)
     reset_counter()
     openFile()
     txtarea.configure(state="disabled")
@@ -139,24 +96,24 @@ def Windorootetttings():
     root['bg']='#F0F0F0'
 def TextAreaConfig():
     global txtarea
-    txtarea = Text(root, width=5, height=0,bg='#F0F0F0', font=("Helvetica", 40))
+    txtarea = Text(root,width=5,height=0,bg='#F0F0F0',font=("Helvetica",40))
     txtarea.place(x=100 ,y=100, height=95, width=150)
     txtarea.configure(state="disabled")
 def Label1Config():
     var = StringVar()
     LabelTop = Label(root,bg='#F0F0F0',fg="blue",textvariable=var,font=("Arial",12))
     var.set("File is generated and saved as counter.txt")
-    LabelTop.place(x=25, y=0)
+    LabelTop.place(x=25,y=0)
 def Label2Config():
     var = StringVar()
     LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
     var.set("Odds 1/4096")
-    LabelTop.place(x=0, y=400)
+    LabelTop.place(x=0,y=400)
 def Label3Config():
     var = StringVar()
     LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
-    var.set("Created by : CorruptedJosh")
-    LabelTop.place(x=0, y=425)
+    var.set("Created by: CorruptedJosh")
+    LabelTop.place(x=0,y=525)
 def HotKeyPress():
     bg = BindGlobal()
     bg.gbind('+',hotkeyadd)
@@ -192,31 +149,30 @@ def hotkeyreset(event):
     resetopen()
 def printopen():
     txtarea.configure(state="normal")
-    txtarea.delete(1.0, END)
-    #add_number()
+    txtarea.delete(1.0,END)
     print_number()
     openFile()
     txtarea.configure(state="disabled")
 def copyright_validation():
-    pyautogui.PAUSE = 0
-    ref_region = pyautogui.locateOnScreen('reference.png')
-    if ref_region != None:
+    pyautogui.PAUSE=0
+    ref_region=pyautogui.locateOnScreen('reference.png')
+    if ref_region!=None:
         addopen()
-        while ref_region != None:
-            ref_region = pyautogui.locateOnScreen('reference.png')
-        root.after(1, copyright_validation())
+        while ref_region!=None:
+            ref_region=pyautogui.locateOnScreen('reference.png')
+        root.after(1,copyright_validation())
         print('test1')
 def start_copyright_validation_in_bg():
-        threading.Thread(target=copyright_validation).start()
+    threading.Thread(target=copyright_validation).start()
 def validationinbgrun():
     global stop_threads
     while True:
-        ref_region = pyautogui.locateOnScreen('reference.png')
-        if ref_region != None:
+        ref_region=pyautogui.locateOnScreen('reference.png')
+        if ref_region!=None:
             addopen()
-            while ref_region != None:
-                ref_region = pyautogui.locateOnScreen('reference.png')
-            root.after(1, validationinbgrun())
+            while ref_region!=None:
+                ref_region=pyautogui.locateOnScreen('reference.png')
+            root.after(1,validationinbgrun())
         if stop_threads:
             break
 def startcvibg():
@@ -224,31 +180,25 @@ def startcvibg():
 def button_mode():
    global is_on
    global stop_threads
-   # Create Label to display the message
-   label = Label(root,text = "Automation is Off / Toggle to enable",fg ="black",font =("Poppins bold", 16))
+   on_= Button(root,image=on,bd=0,command=button_mode)
+   on_.place(x=100,y=350)
+   label = Label(root,text = "Automation is Off / Toggle to enable",fg ="black",font =("Poppins bold",16))
    label.place(x=100,y=300)
+
    #Determine it is on or off
    if is_on:
       on_.config(image=off)
-      label.config(text ="Automation is Off", fg= "black")
-      is_on = False
-      stop_threads = True
+      label.config(text="Automation is Off", fg="black")
+      is_on=False
+      stop_threads=True
       print('function stopped')
    else:
       on_.config(image=on)
       label.config(text ="Automation is On", fg="black")
-      is_on = True
-      stop_threads = False
+      is_on=True
+      stop_threads=False
       startcvibg()
       print('function running')
-
-      # Create A Button
-on_= Button(root,image =on,bd =0,command = button_mode)
-on_.place(x=100,y=350)
-
-
-#### END TESTING
-
 
 #### THIS IS FOR THE GUI
 file_validation()
@@ -259,5 +209,6 @@ HotKeyPress()
 MainButtons()
 Label2Config()
 Label3Config()
+button_mode()
 
 root.mainloop()
