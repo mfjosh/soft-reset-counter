@@ -1,4 +1,4 @@
-#Version Number : 0.2.3
+#Version Number : 0.2.4
 #####    ----       global flags
 from tkinter import *
 import os
@@ -8,7 +8,13 @@ from bindglobal import BindGlobal
 import pyautogui
 import threading
 
-ws = Tk()
+root = Tk()
+#Global Variables for button automation switch
+is_on = True
+stop_threads = False
+on = PhotoImage(file ="on.png")
+off = PhotoImage(file ="off.png")
+pyautogui.PAUSE = 0
 ######     ----    Functions will be placed here
 def file_validation():
     global file_path
@@ -58,7 +64,7 @@ def print_number():
     #close file
     text_file.close()
     print(data)
-def get_menu_choice():
+#def get_menu_choice():
     def print_menu():       # Your menu design here
         print(30 * "-", "SHINY COUNTER MENU", 30 * "-")
         print("The Current Count is: ", end=""), print_number()
@@ -127,28 +133,28 @@ def openFile():
     data = tf.read()
     txtarea.insert(END, data)
     tf.close()
-def WindowSetttings():
-    ws.title("Shiny Reset Counter")
-    ws.geometry("475x650")
-    ws['bg']='#F0F0F0'
+def Windorootetttings():
+    root.title("Shiny Reset Counter")
+    root.geometry("475x650")
+    root['bg']='#F0F0F0'
 def TextAreaConfig():
     global txtarea
-    txtarea = Text(ws, width=5, height=0,bg='#F0F0F0', font=("Helvetica", 40))
+    txtarea = Text(root, width=5, height=0,bg='#F0F0F0', font=("Helvetica", 40))
     txtarea.place(x=100 ,y=100, height=95, width=150)
     txtarea.configure(state="disabled")
 def Label1Config():
     var = StringVar()
-    LabelTop = Label(ws,bg='#F0F0F0',fg="blue",textvariable=var,font=("Arial",12))
+    LabelTop = Label(root,bg='#F0F0F0',fg="blue",textvariable=var,font=("Arial",12))
     var.set("File is generated and saved as counter.txt")
     LabelTop.place(x=25, y=0)
 def Label2Config():
     var = StringVar()
-    LabelTop = Label(ws,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
+    LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
     var.set("Odds 1/4096")
     LabelTop.place(x=0, y=400)
 def Label3Config():
     var = StringVar()
-    LabelTop = Label(ws,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
+    LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
     var.set("Created by : CorruptedJosh")
     LabelTop.place(x=0, y=425)
 def HotKeyPress():
@@ -158,21 +164,21 @@ def HotKeyPress():
     bg.gbind('*',hotkeyreset)
 def MainButtons():
     Button(
-        ws,
+        root,
         text="add",
         height=2,
         width=10,
         command=lambda:addopen()
         ).place(x=100,y=200)
     Button(
-        ws,
+        root,
         text="subtract",
         height=2,
         width=10,
         command=lambda:subopen()
         ).place(x=180,y=200)
     Button(
-        ws,
+        root,
         text="reset",
         height=2,
         width=21,
@@ -184,7 +190,6 @@ def hotkeysub(event):
     subopen()
 def hotkeyreset(event):
     resetopen()
-
 def printopen():
     txtarea.configure(state="normal")
     txtarea.delete(1.0, END)
@@ -192,31 +197,67 @@ def printopen():
     print_number()
     openFile()
     txtarea.configure(state="disabled")
-####TESTING
 def copyright_validation():
+    pyautogui.PAUSE = 0
     ref_region = pyautogui.locateOnScreen('reference.png')
-    time.sleep(1)
     if ref_region != None:
         addopen()
         while ref_region != None:
             ref_region = pyautogui.locateOnScreen('reference.png')
-            time.sleep(1)
-    ws.after(2000, start_copyright_validation_in_bg)
+        root.after(1, copyright_validation())
+        print('test1')
 def start_copyright_validation_in_bg():
-    threading.Thread(target=copyright_validation).start()
+        threading.Thread(target=copyright_validation).start()
+def validationinbgrun():
+    global stop_threads
+    while True:
+        ref_region = pyautogui.locateOnScreen('reference.png')
+        if ref_region != None:
+            addopen()
+            while ref_region != None:
+                ref_region = pyautogui.locateOnScreen('reference.png')
+            root.after(1, validationinbgrun())
+        if stop_threads:
+            break
+def startcvibg():
+        threading.Thread(target=validationinbgrun).start()
+def button_mode():
+   global is_on
+   global stop_threads
+   # Create Label to display the message
+   label = Label(root,text = "Automation is Off / Toggle to enable",fg ="black",font =("Poppins bold", 16))
+   label.place(x=100,y=300)
+   #Determine it is on or off
+   if is_on:
+      on_.config(image=off)
+      label.config(text ="Automation is Off", fg= "black")
+      is_on = False
+      stop_threads = True
+      print('function stopped')
+   else:
+      on_.config(image=on)
+      label.config(text ="Automation is On", fg="black")
+      is_on = True
+      stop_threads = False
+      startcvibg()
+      print('function running')
+
+      # Create A Button
+on_= Button(root,image =on,bd =0,command = button_mode)
+on_.place(x=100,y=350)
+
 
 #### END TESTING
+
 
 #### THIS IS FOR THE GUI
 file_validation()
 Label1Config()
 TextAreaConfig()
-WindowSetttings()
+Windorootetttings()
 HotKeyPress()
 MainButtons()
 Label2Config()
 Label3Config()
-start_copyright_validation_in_bg()
 
-
-ws.mainloop()
+root.mainloop()
