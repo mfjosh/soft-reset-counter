@@ -9,14 +9,14 @@ import pyautogui
 import threading
 
 root = Tk()
-#Global Variables for button automation switch
+#####    ----       Global Variables for button automation switch
 is_on = True
 stop_threads = False
 on = PhotoImage(file ="on.png")
 off = PhotoImage(file ="off.png")
 pyautogui.PAUSE = 0
 
-######     ----    Functions will be placed here
+#####    ----       Functions will be placed here
 def file_validation():
     global file_path
     file_path ="counter.txt"
@@ -26,9 +26,7 @@ def file_validation():
         text_file = open(file_path,'r')
         #read whole file to a string
         data = text_file.read()
-        #close file
         text_file.close()
-        #print("File location: counter.txt")
     else:
         with open(file_path, 'w') as f:
             f.write("0")
@@ -58,11 +56,8 @@ def reset_counter():
     with open(file_path, 'w') as e:
         e.write(str(sum))
 def print_number():
-    #open in read mode
     text_file = open(file_path,'r')
-    #read whole file to a string
     data = text_file.read()
-    #close file
     text_file.close()
     print(data)
 def addopen():
@@ -84,9 +79,7 @@ def resetopen():
     openFile()
     txtarea.configure(state="disabled")
 def openFile():
-    #open in read mode
     tf = open(file_path,'r')
-    #read whole file to a string
     data = tf.read()
     txtarea.insert(END, data)
     tf.close()
@@ -184,7 +177,6 @@ def button_mode():
    on_.place(x=100,y=350)
    label = Label(root,text = "Automation is Off / Toggle to enable",fg ="black",font =("Poppins bold",16))
    label.place(x=100,y=300)
-
    #Determine it is on or off
    if is_on:
       on_.config(image=off)
@@ -200,7 +192,7 @@ def button_mode():
       startcvibg()
       print('function running')
 
-#### THIS IS FOR THE GUI
+#####    ----       THIS IS THE GUI
 file_validation()
 Label1Config()
 TextAreaConfig()
@@ -211,4 +203,5 @@ Label2Config()
 Label3Config()
 button_mode()
 
+#####    ----       End of Program
 root.mainloop()
