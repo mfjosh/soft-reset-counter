@@ -8,3 +8,8 @@ So far, the counter-gui.py is the actively updated script. I have cleaned up the
 2. I have not yet quite found a way to customize the hotkeys for user input so I have created default system hotkeys for adding(+) subtracting(-) and resetting counter value(*). Once I find an efficient way to record multiple keypress, I will implement this. For now, they are hard coded and will work even with the program not in focus.
 
 3. I have added a switch to enable automation. This utilizes the reference.png file as its control and will increase the counter value while its running as long as the reference is detected on the screen. replace the reference.png with a screenshot of the game you are playing that you can rely on as a counter. (eg. Pokemon BDSP, the copyright screen only shows on game load so it is a perfect reference). You can also use the Switch home screen however the counter may increase anytime you press home prior to closing the game.
+
+Current known issues :
+1. GUI is horrible. I am working to improve this however this will take some time as its not top of mind for me.
+2. Lots of messy code. I am new to python with this being my first real project. I know how to utilize functions and may have overdone it. I will continuously work on cleaning up this script.
+3. Using automation causes performance issues such as a small delay in mouse functionality. I am currently trying to figure out why this is and may need to use a different method of capturing the reference. for now, use automation at your own risk. 
