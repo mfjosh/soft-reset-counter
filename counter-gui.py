@@ -1,6 +1,7 @@
-#Version Number : 0.2.4
+#Version Number : 0.2.5
 #####    ----       global flags
 from tkinter import *
+from tkinter import font as font
 import os
 import time
 import msvcrt
@@ -10,12 +11,11 @@ import threading
 
 root = Tk()
 #####    ----       Global Variables for button automation switch
-is_on = True
 stop_threads = False
-on = PhotoImage(file ="on.png")
-off = PhotoImage(file ="off.png")
+# this should reduce lag in automation [pyautogui.PAUSE = 0]
 pyautogui.PAUSE = 0
-
+#is_on is for the automation switch
+is_on = True
 #####    ----       Functions will be placed here
 def file_validation():
     global file_path
@@ -33,7 +33,10 @@ def file_validation():
             ftext_file = open(file_path, 'r')
             fdata = ftext_file.read()
             ftext_file.close()
-            print("counter.txt created in directory")
+def Windorootetttings():
+    root.title("Shiny Reset Counter")
+    root.geometry("375x500")
+    root['bg']='#F0F0F0'
 def add_number():
     text1 = open(file_path,'r')
     data1 = text1.read()
@@ -59,7 +62,6 @@ def print_number():
     text_file = open(file_path,'r')
     data = text_file.read()
     text_file.close()
-    print(data)
 def addopen():
     txtarea.configure(state="normal")
     txtarea.delete(1.0, END)
@@ -83,57 +85,39 @@ def openFile():
     data = tf.read()
     txtarea.insert(END, data)
     tf.close()
-def Windorootetttings():
-    root.title("Shiny Reset Counter")
-    root.geometry("475x650")
-    root['bg']='#F0F0F0'
 def TextAreaConfig():
     global txtarea
-    txtarea = Text(root,width=5,height=0,bg='#F0F0F0',font=("Helvetica",40))
-    txtarea.place(x=100 ,y=100, height=95, width=150)
+    txtarea = Text(root,width=5,height=0,bg='#F0F0F0',bd=0,font=("Poppins bold",40))
+    txtarea.place(x=150 ,y=100, height=95, width=150)
     txtarea.configure(state="disabled")
 def Label1Config():
     var = StringVar()
-    LabelTop = Label(root,bg='#F0F0F0',fg="blue",textvariable=var,font=("Arial",12))
+    LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Poppins bold",12))
     var.set("File is generated and saved as counter.txt")
     LabelTop.place(x=25,y=0)
 def Label2Config():
     var = StringVar()
-    LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
+    LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Poppins bold",13))
     var.set("Odds 1/4096")
-    LabelTop.place(x=0,y=400)
+    LabelTop.place(x=0,y=450)
 def Label3Config():
     var = StringVar()
-    LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Arial",10))
+    LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Poppins bold",12))
     var.set("Created by: CorruptedJosh")
-    LabelTop.place(x=0,y=525)
+    LabelTop.place(x=0,y=470)
 def HotKeyPress():
     bg = BindGlobal()
     bg.gbind('+',hotkeyadd)
     bg.gbind('-',hotkeysub)
     bg.gbind('*',hotkeyreset)
 def MainButtons():
-    Button(
-        root,
-        text="add",
-        height=2,
-        width=10,
-        command=lambda:addopen()
-        ).place(x=100,y=200)
-    Button(
-        root,
-        text="subtract",
-        height=2,
-        width=10,
-        command=lambda:subopen()
-        ).place(x=180,y=200)
-    Button(
-        root,
-        text="reset",
-        height=2,
-        width=21,
-        command=lambda:resetopen()
-        ).place(x=100,y=241)
+    buttonadd = PhotoImage(file="add.png")
+    buttonsubtract = PhotoImage(file="subtract.png")
+    buttonreset = PhotoImage(file="reset.png")
+
+    add_ =Button(root,text="add",bd=0,height=2,width=10,font=font.Font(size=14),command=lambda:addopen()).place(x=70,y=200)
+    subtract_ =Button(root,text="subtract",bd=0,height=2,width=10,font=font.Font(size=14),command=lambda:subopen()).place(x=150,y=200)
+    reset_ =Button(root,text="reset",bd=0,height=2,width=21,font=font.Font(size=14),command=lambda:resetopen()).place(x=50,y=241)
 def hotkeyadd(event):
     addopen()
 def hotkeysub(event):
@@ -172,10 +156,14 @@ def startcvibg():
         threading.Thread(target=validationinbgrun).start()
 def button_mode():
    global is_on
+   global on
+   global off
    global stop_threads
+   on = PhotoImage(file="on.png")
+   off = PhotoImage(file="off.png")
    on_= Button(root,image=on,bd=0,command=button_mode)
-   on_.place(x=100,y=350)
-   label = Label(root,text = "Automation is Off / Toggle to enable",fg ="black",font =("Poppins bold",16))
+   on_.place(x=120,y=330)
+   label = Label(root,text = "Automation is Off / Toggle to enable",fg ="black",font =("Poppins bold",12))
    label.place(x=100,y=300)
    #Determine it is on or off
    if is_on:
