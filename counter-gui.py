@@ -41,16 +41,27 @@ def add_number():
     text1 = open(file_path,'r')
     data1 = text1.read()
     text1.close()
-    sum = int(data1) + 1
-    with open(file_path, 'w') as e:
-        e.write(str(sum))
+
+    if data1.isdigit():
+        sum = int(data1) + 1
+        with open(file_path, 'w') as e:
+            e.write(str(sum))
+    else:
+        with open(file_path, 'w') as e:
+            e.write('0')
 def subtract_number():
+    filesize = os.path.getsize(file_path)
     text1 = open(file_path,'r')
     data1 = text1.read()
-    text1.close()
-    sum = int(data1) - 1
     with open(file_path, 'w') as e:
-        e.write(str(sum))
+        if data1.isalpha() or filesize == 0:
+            e.write('0')
+        elif '-1' in data1:
+            e.write('0')
+        else:
+            sum = int(data1) - 1
+            e.write(str(sum))
+    #text1.close()
 def reset_counter():
     text1 = open(file_path,'r')
     data1 = text1.read()
