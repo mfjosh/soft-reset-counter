@@ -1,13 +1,12 @@
-#Version Number : 0.2.5
+###                                          Version Number : 0.2.6
 #####    ----       global flags
-from tkinter import *
-from tkinter import font as font
+from tkinter import * #used for GUI
+from tkinter import font as font #used to have fancy font options
 import os
 import time
-#import msvcrt 
-from bindglobal import BindGlobal
-import pyautogui
-import threading
+from bindglobal import BindGlobal #used for keybindings to set hotkeys
+import pyautogui #used to capute screen for automation actions
+import threading #used to prevent program from being lockedup compltely when automation is running
 
 root = Tk()
 #about is currently used for the about message under Help menubar
