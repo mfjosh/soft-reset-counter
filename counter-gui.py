@@ -10,6 +10,12 @@ import pyautogui
 import threading
 
 root = Tk()
+about = 'Automation is utilized by matching reference.png to the screen.'\
+'With automation enabled, the program will count anytime the reference'\
+'is visible. This can be utilized by screenshotting an unique visual,'\
+'such as a copyright screen that appears during start-up to count your resets'\
+'automatically. This feature seems to be quite laggy so use with caution'
+
 #####    ----       Global Variables for button automation switch
 stop_threads = False
 # this should reduce lag in automation [pyautogui.PAUSE = 0]
@@ -190,8 +196,26 @@ def button_mode():
       stop_threads=False
       startcvibg()
       print('function running')
-
+def AboutHelp():
+   filewin = Toplevel(root)
+   var = StringVar()
+   LabelTop = Label(filewin, bg='#F0F0F0',fg="black",textvariable=var,font=("Poppins bold",10), wraplength=375)
+   var.set(about)
+   LabelTop.pack()
+   button = Button(filewin, bg='#F0F0F0', fg="black",text="close", command=filewin.destroy)
+   button.pack()
 #####    ----       THIS IS THE GUI
+menubar = Menu(root)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="Exit", command=root.destroy)
+menubar.add_cascade(label="File", menu=filemenu)
+editmenu = Menu(menubar, tearoff=0)
+editmenu.add_separator()
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="About...", command=AboutHelp)
+menubar.add_cascade(label="Help", menu=helpmenu)
+root.config(menu=menubar)
+
 file_validation()
 Label1Config()
 TextAreaConfig()
@@ -200,6 +224,7 @@ HotKeyPress()
 MainButtons()
 Label2Config()
 Label3Config()
+printopen()
 button_mode()
 
 #####    ----       End of Program
