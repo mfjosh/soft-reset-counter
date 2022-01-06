@@ -4,12 +4,13 @@ from tkinter import *
 from tkinter import font as font
 import os
 import time
-import msvcrt
+#import msvcrt 
 from bindglobal import BindGlobal
 import pyautogui
 import threading
 
 root = Tk()
+#about is currently used for the about message under Help menubar
 about = 'Automation is utilized by matching reference.png to the screen.'\
 'With automation enabled, the program will count anytime the reference'\
 'is visible. This can be utilized by screenshotting an unique visual,'\
@@ -23,6 +24,8 @@ pyautogui.PAUSE = 0
 #is_on is for the automation switch
 is_on = True
 #####    ----       Functions will be placed here
+#file_validation checks whether or not counter.txt exists. If it does, it stores the value into file_path
+#if not, it creates the file, writes 0, then stores the value into file_path
 def file_validation():
     global file_path
     file_path ="counter.txt"
@@ -39,15 +42,15 @@ def file_validation():
             ftext_file = open(file_path, 'r')
             fdata = ftext_file.read()
             ftext_file.close()
-def Windorootetttings():
+#Windowrootsettings is the basic information for the main window.
+def Windorootsetttings():
     root.title("Shiny Reset Counter")
     root.geometry("375x500")
     root['bg']='#F0F0F0'
+#add_number will validate the information in counter.txt is a number, if so it will add 1. Otherwise, it will append 0.
 def add_number():
     text1 = open(file_path,'r')
     data1 = text1.read()
-    text1.close()
-
     if data1.isdigit():
         sum = int(data1) + 1
         with open(file_path, 'w') as e:
@@ -55,19 +58,22 @@ def add_number():
     else:
         with open(file_path, 'w') as e:
             e.write('0')
+    text1.close()
+#subtract_number validates there is a valid positive within counter.txt, then subtracts 1 from it.
+#If the file is empty (0 bites), contains alpha charactors, or a negative number it will append 0 to the file.
+#If the number is positive, it will subtract 1.
 def subtract_number():
     filesize = os.path.getsize(file_path)
     text1 = open(file_path,'r')
     data1 = text1.read()
     with open(file_path, 'w') as e:
-        if data1.isalpha() or filesize == 0:
-            e.write('0')
-        elif '-1' in data1:
+        if data1.isalpha() or filesize == 0 or '-1' in data1:
             e.write('0')
         else:
             sum = int(data1) - 1
             e.write(str(sum))
-    #text1.close()
+    text1.close()
+#reset_counter is used to set value to 0 in counter.txt
 def reset_counter():
     text1 = open(file_path,'r')
     data1 = text1.read()
@@ -75,38 +81,47 @@ def reset_counter():
     sum = 0
     with open(file_path, 'w') as e:
         e.write(str(sum))
+    text1.close()
+#print_number simply reads the number from counter.txt
 def print_number():
     text_file = open(file_path,'r')
     data = text_file.read()
     text_file.close()
+#addopen utilizes subtract_number() to decrease the value, then displays current value in GUI
 def addopen():
     txtarea.configure(state="normal")
     txtarea.delete(1.0, END)
     add_number()
     openFile()
     txtarea.configure(state="disabled")
+#subopen utilizes subtract_number() to decrease the value, then displays current value in GUI
 def subopen():
     txtarea.configure(state="normal")
     txtarea.delete(1.0, END)
     subtract_number()
     openFile()
     txtarea.configure(state="disabled")
+#resetopen resets value to 0 by using reset_counter() then displays value in GUI
 def resetopen():
     txtarea.configure(state="normal")
     txtarea.delete(1.0,END)
     reset_counter()
     openFile()
     txtarea.configure(state="disabled")
+#openFile displays the current value in the GUI by reading counter.txt
 def openFile():
     tf = open(file_path,'r')
     data = tf.read()
     txtarea.insert(END, data)
     tf.close()
+#TextAreaConfig is the window which displays the value. I have it disabled so the user cannot change value on accident.
+#The commands which change the value, temporarily enable the field while adjusting the value
 def TextAreaConfig():
     global txtarea
     txtarea = Text(root,width=5,height=0,bg='#F0F0F0',bd=0,font=("Poppins bold",40))
     txtarea.place(x=150 ,y=100, height=95, width=150)
     txtarea.configure(state="disabled")
+#Below are labels that are configured on the main program.
 def Label1Config():
     var = StringVar()
     LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Poppins bold",12))
@@ -122,11 +137,14 @@ def Label3Config():
     LabelTop = Label(root,bg='#F0F0F0',fg="black",textvariable=var,font=("Poppins bold",12))
     var.set("Created by: CorruptedJosh")
     LabelTop.place(x=0,y=470)
+#HotKeyPress is used to track the keyboard buttons for the key bindings. At some point I would like to enable the user to set their own.
 def HotKeyPress():
     bg = BindGlobal()
     bg.gbind('+',hotkeyadd)
     bg.gbind('-',hotkeysub)
     bg.gbind('*',hotkeyreset)
+#MainButtons are the first sets of buttons that I have added. This is basically the configuration, placement, and commands.
+#I tried adding images to the buttons but for now it just doesn't want to work. Keeping code here for later
 def MainButtons():
     buttonadd = PhotoImage(file="add.png")
     buttonsubtract = PhotoImage(file="subtract.png")
@@ -135,29 +153,21 @@ def MainButtons():
     add_ =Button(root,text="add",bd=0,height=2,width=10,font=font.Font(size=14),command=lambda:addopen()).place(x=70,y=200)
     subtract_ =Button(root,text="subtract",bd=0,height=2,width=10,font=font.Font(size=14),command=lambda:subopen()).place(x=150,y=200)
     reset_ =Button(root,text="reset",bd=0,height=2,width=21,font=font.Font(size=14),command=lambda:resetopen()).place(x=50,y=241)
+#The hotkey buttons below are the events triggered when the hotkeys are pressed
 def hotkeyadd(event):
     addopen()
 def hotkeysub(event):
     subopen()
 def hotkeyreset(event):
     resetopen()
+#printopen shows the value within the GUI by using print_number()
 def printopen():
     txtarea.configure(state="normal")
     txtarea.delete(1.0,END)
     print_number()
     openFile()
     txtarea.configure(state="disabled")
-def copyright_validation():
-    pyautogui.PAUSE=0
-    ref_region=pyautogui.locateOnScreen('reference.png')
-    if ref_region!=None:
-        addopen()
-        while ref_region!=None:
-            ref_region=pyautogui.locateOnScreen('reference.png')
-        root.after(1,copyright_validation())
-        print('test1')
-def start_copyright_validation_in_bg():
-    threading.Thread(target=copyright_validation).start()
+#validationinbgrun is the reference validation used when automation is toggled to enabled
 def validationinbgrun():
     global stop_threads
     while True:
@@ -169,8 +179,10 @@ def validationinbgrun():
             root.after(1,validationinbgrun())
         if stop_threads:
             break
+#startcvibg is to create threads so the automation does not lock the entire program
 def startcvibg():
         threading.Thread(target=validationinbgrun).start()
+#button_mode is for the automation button.
 def button_mode():
    global is_on
    global on
@@ -196,6 +208,7 @@ def button_mode():
       stop_threads=False
       startcvibg()
       print('function running')
+#AboutHelp function is to create new window for the about secion under Help menubar.
 def AboutHelp():
    filewin = Toplevel(root)
    var = StringVar()
@@ -205,6 +218,8 @@ def AboutHelp():
    button = Button(filewin, bg='#F0F0F0', fg="black",text="close", command=filewin.destroy)
    button.pack()
 #####    ----       THIS IS THE GUI
+
+#Start of topLevel Menubar
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Exit", command=root.destroy)
@@ -215,11 +230,12 @@ helpmenu = Menu(menubar, tearoff=0)
 helpmenu.add_command(label="About...", command=AboutHelp)
 menubar.add_cascade(label="Help", menu=helpmenu)
 root.config(menu=menubar)
+#End of topLevel Menubar
 
 file_validation()
 Label1Config()
 TextAreaConfig()
-Windorootetttings()
+Windorootsetttings()
 HotKeyPress()
 MainButtons()
 Label2Config()
