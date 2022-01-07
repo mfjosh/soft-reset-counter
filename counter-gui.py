@@ -23,6 +23,18 @@ pyautogui.PAUSE = 0
 #is_on is for the automation switch
 is_on = True
 #####    ----       Functions will be placed here
+#Get absolute path. I placed this here to see if I can make the executable file one file with images
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+#END TEST
+
 #file_validation checks whether or not counter.txt exists. If it does, it stores the value into file_path
 #if not, it creates the file, writes 0, then stores the value into file_path
 def file_validation():
@@ -143,15 +155,19 @@ def HotKeyPress():
     bg.gbind('-',hotkeysub)
     bg.gbind('*',hotkeyreset)
 #MainButtons are the first sets of buttons that I have added. This is basically the configuration, placement, and commands.
-#I tried adding images to the buttons but for now it just doesn't want to work. Keeping code here for later
 def MainButtons():
-    buttonadd = PhotoImage(file="add.png")
-    buttonsubtract = PhotoImage(file="subtract.png")
-    buttonreset = PhotoImage(file="reset.png")
+    global buttonadd
+    global buttonreset
+    global buttonsubtract
+    buttonadd = PhotoImage(file= resource_path("images\\add.png"))
+    buttonsubtract = PhotoImage(file= resource_path("images\\subtract.png"))
+    buttonreset = PhotoImage(file= resource_path("images\\reset.png"))
 
-    add_ =Button(root,text="add",bd=0,height=2,width=10,font=font.Font(size=14),command=lambda:addopen()).place(x=70,y=200)
-    subtract_ =Button(root,text="subtract",bd=0,height=2,width=10,font=font.Font(size=14),command=lambda:subopen()).place(x=150,y=200)
-    reset_ =Button(root,text="reset",bd=0,height=2,width=21,font=font.Font(size=14),command=lambda:resetopen()).place(x=50,y=241)
+
+
+    add_ =Button(root,text="add",image=buttonadd,bd=0,height=45,width=78,font=font.Font(size=14),command=lambda:addopen()).place(x=70,y=200)
+    subtract_ =Button(root,text="subtract",image=buttonsubtract,bd=0,height=45,width=114,font=font.Font(size=14),command=lambda:subopen()).place(x=150,y=200)
+    reset_ =Button(root,text="reset",image=buttonreset,bd=0,height=45,width=88,font=font.Font(size=14),command=lambda:resetopen()).place(x=115,y=245)
 #The hotkey buttons below are the events triggered when the hotkeys are pressed
 def hotkeyadd(event):
     addopen()
@@ -187,8 +203,8 @@ def button_mode():
    global on
    global off
    global stop_threads
-   on = PhotoImage(file="on.png")
-   off = PhotoImage(file="off.png")
+   on = PhotoImage(file= resource_path("images\on.png"))
+   off = PhotoImage(file= resource_path("images\off.png"))
    on_= Button(root,image=on,bd=0,command=button_mode)
    on_.place(x=120,y=330)
    label = Label(root,text = "Automation is Off / Toggle to enable",fg ="black",font =("Poppins bold",12))
@@ -216,6 +232,8 @@ def AboutHelp():
    LabelTop.pack()
    button = Button(filewin, bg='#F0F0F0', fg="black",text="close", command=filewin.destroy)
    button.pack()
+
+
 #####    ----       THIS IS THE GUI
 
 #Start of topLevel Menubar
